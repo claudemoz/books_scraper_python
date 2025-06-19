@@ -17,16 +17,6 @@ logger = logging.getLogger(__name__)
 
 class BooksScraperDB:
     def __init__(self, db_config):
-        """
-        Initialise le scraper avec la configuration de la base de données
-        db_config = {
-            'host': 'localhost',
-            'database': 'books_db',
-            'user': 'username',
-            'password': 'password',
-            'port': 5432
-        }
-        """
         self.db_config = db_config
         self.conn = None
         self.session = requests.Session()
