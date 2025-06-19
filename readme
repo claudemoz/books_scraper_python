@@ -1,0 +1,62 @@
+# README - Books Scraper
+
+## Installation et Configuration
+
+### 1. Installer les dépendances
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configurer PostgreSQL
+- Créer une base de données `books_db`
+- Modifier la configuration `db_config` dans la fonction `main()`
+
+### 3. Exécuter le script
+``` bash
+python script_books.py
+```
+
+## Fichiers générés
+
+- **books_export.csv** : Liste des livres avec détails complets
+- **quotes_export.json** : Citations avec auteurs et tags associés
+- **author_books_relations.csv** : Relations entre auteurs et livres
+
+## Structure de la base de données
+
+### Tables principales
+- **categories** : Catégories de livres
+- **publishers** : Maisons d'édition
+- **authors** : Auteurs avec informations OpenLibrary
+- **books** : Livres avec tous les détails
+- **quotes** : Citations des auteurs
+- **tags** : Tags des citations
+
+### Tables de relations
+- **book_authors** : Relations N:N livre-auteur
+- **quote_tags** : Relations N:N citation-tag
+
+## Requêtes d'exemple
+
+### Afficher les premiers livres
+```sql
+SELECT * FROM books LIMIT 5;
+```
+
+### Nombre de livres par auteur
+```sql
+SELECT a.name, COUNT(ba.book_id) as nb_books
+FROM authors a
+LEFT JOIN book_authors ba ON a.id = ba.author_id
+GROUP BY a.id, a.name
+ORDER BY nb_books DESC;
+```
+
+### Statistiques par catégorie
+```sql
+SELECT c.name, COUNT(b.id) as nb_books, AVG(b.price) as avg_price
+FROM categories c
+LEFT JOIN books b ON c.id = b.category_id
+GROUP BY c.id, c.name
+ORDER BY nb_books DESC;
+```
